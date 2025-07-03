@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registro de Reparaciones</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<link rel="stylesheet" href="cluster/estilos/style.css">
+</head>
+<body>
+  <h2>Registro de Reparaciones</h2>
+
+  <div class="contenedor-principal">
+    <!-- IZQUIERDA: FORMULARIO + TABLA -->
+    <div class="seccion-izquierda">
+      <form id="formulario" autocomplete="off">
+        <input type="date" id="fecha" required />
+        <input type="text" id="cliente" placeholder="Cliente" required />
+        <input type="text" id="telefono" placeholder="Teléfono" required />
+        <input type="text" id="modelo" placeholder="Modelo del celular" required />
+        <input type="text" id="reparacion" placeholder="Tipo de reparación" required />
+        <select id="tecnico" required>
+          <option value="">Selecciona Técnico</option>
+          <option value="Santiago">Santiago</option>
+          <option value="Jonathan">Jonathan</option>
+          <option value="Ivan">Ivan</option>
+          <option value="Diego">Deivid</option>
+          <option value="Alex">Alex</option>
+          <option value="Harold">Harold</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <input type="text" id="notas" placeholder="Notas adicionales" />
+        <input type="text" id="controlID" placeholder="Control ID" required />
+        <select id="estado" required>
+          <option value="nulo">No se ha hecho nada</option>
+          <option value="pendiente">Reparado pero no entregado</option>
+          <option value="entregado">Entregado</option>
+        </select>
+
+        <label for="tipo-contrasena">Tipo de Contraseña</label>
+        <select id="tipo-contrasena" required>
+          <option value="">Selecciona tipo</option>
+          <option value="pin">PIN / Palabra</option>
+          <option value="patron">Patrón Gráfico</option>
+        </select>
+        <input type="text" id="contrasena" placeholder="PIN o palabra" style="display: none;" />
+
+        <div id="patron-container" style="display: none;">
+          <div id="patron-grid">
+            <button type="button" class="patron-btn" data-num="1">1</button>
+            <button type="button" class="patron-btn" data-num="2">2</button>
+            <button type="button" class="patron-btn" data-num="3">3</button>
+            <button type="button" class="patron-btn" data-num="4">4</button>
+            <button type="button" class="patron-btn" data-num="5">5</button>
+            <button type="button" class="patron-btn" data-num="6">6</button>
+            <button type="button" class="patron-btn" data-num="7">7</button>
+            <button type="button" class="patron-btn" data-num="8">8</button>
+            <button type="button" class="patron-btn" data-num="9">9</button>
+          </div>
+          <small>Haz clic en los puntos en orden para establecer el patrón</small>
+        </div>
+
+        <input type="hidden" id="patron-input" />
+        <p class="error" id="errorPatron" style="display: none; color: red;">Debe ingresar un patrón válido.</p>
+
+        <button type="submit">Agregar Reparación</button>
+        <button type="button" id="btn-editar">Editar</button>
+        <button type="button" id="btn-eliminar">Eliminar</button>
+        <button type="button" id="btn-export-excel">Exportar Excel</button>
+        <button type="button" id="btn-export-json">Exportar JSON</button>
+        <button type="button" id="btn-descargar-imagen">Descargar Imagen</button>
+        <input type="file" id="importarBD" />
+        <input type="text" placeholder="Buscar..." id="buscarInput" />
+      </form>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Cliente</th>
+            <th>Teléfono</th>
+            <th>Modelo</th>
+            <th>Reparación</th>
+            <th>Técnico</th>
+            <th>Notas</th>
+            <th>Control ID</th>
+            <th>Estado</th>
+            <th>Contraseña</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-reparaciones"></tbody>
+      </table>
+    </div>
+
+    <!-- DERECHA: GRÁFICA CENTRADA + MÉTRICAS -->
+    <div class="seccion-derecha">
+      <div class="grafico-container">
+        <canvas id="graficoReparaciones"></canvas>
+        <div class="metricas-container">
+          <p>Total: <span id="total-reparaciones">0</span></p>
+          <p>Pendientes: <span id="total-pendientes">0</span></p>
+          <p>Entregadas: <span id="total-entregadas">0</span></p>
+        </div>
+      </div>
+      <div id="contenedor-exportacion"></div>
+    </div>
+  </div>
+
+  <script type="module" src="cluster/estructura/laboratorio/union.js"></script>
+</body>
+</html>
