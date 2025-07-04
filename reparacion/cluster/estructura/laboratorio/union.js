@@ -239,105 +239,148 @@ function exportarSeleccionadaComoImagen(tipo = null) {
   const fecha = new Date().toLocaleDateString('es-CO');
 
   const contenido = `
-    <html>
-      <head>
-        <title>Factura POS</title>
-        <style>
-          body {
-            font-family: monospace;
-            font-size: 11px;
-            margin: 0;
-            padding: 0;
-          }
-          .factura {
-            max-width: 280px;
-            padding: 10px;
-          }
-          .center {
-            text-align: center;
-          }
-          .linea {
-            border-top: 1px dashed #000;
-            margin: 4px 0;
-          }
-          .campo {
-            margin-bottom: 2px;
-          }
-          @media print {
-            @page {
-              size: 58mm auto;
-              margin: 0;
-            }
-            body {
-              margin: 0;
-            }
-          }
-        </style>
-      </head>
-      <body onload="window.print(); window.close();">
-        <div class="factura">
-          <div class="center">
-            <strong>Fix_Bionic</strong><br />
-            NIT: 1022421675-9<br />
-            ESTABLECIMIENTO: FIX_Bionic<br />
-            Cra 50 No. 51 - 29<br />
-            CC Arquicentro<br />
-            Itagüí, Antioquia, Colombia<br />
-            Tel: (+57) 301 5920400<br />
-            Registrado en el Régimen Simple de Tributación<br />
-            No Responsable de IVA<br />
-            Actividad Económica: 9511 - Mantenimiento y reparación de aparatos electrónicos de consumo
-          </div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Factura</title>
+<style>
+  body {
+    font-family: monospace;
+    font-size: 11px;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+  }
 
-          <div class="linea"></div>
-          <div class="center"><strong>Factura Electrónica de Venta</strong></div>
-          <div class="campo">Número: FE ${facturaID}</div>
-          <div class="campo">Fecha: ${fecha}</div>
-          <div class="campo">Forma de Pago: Contado</div>
-          <div class="campo">Medio de Pago: Acuerdo mutuo</div>
+  .factura {
+    max-width: 280px;
+    padding: 10px;
+    margin: 10px auto;
+    border: 1px solid #000;
+    box-sizing: border-box;
+  }
 
-          <div class="campo">Vendido por: ${cel[6].textContent}</div>
-          <div class="campo">Cliente: ${cel[1].textContent}</div>
-          <div class="campo">Teléfono: ${cel[2].textContent}</div>
-          <div class="campo">Modelo: ${cel[3].textContent}</div>
-          <div class="campo">Reparación: ${cel[4].textContent}</div>
-          <div class="campo">Notas: ${cel[5].textContent}</div>
+  .center {
+    text-align: center;
+  }
 
-          <div class="linea"></div>
-          <strong>Detalle:</strong><br />
-          1 UND ${cel[4].textContent}<br />
-          Precio Unitario: $${parseFloat(cel[7].textContent).toLocaleString()}<br />
-          Valor Total: $${parseFloat(cel[7].textContent).toLocaleString()}<br />
+  .logo {
+    display: block;
+    margin: 0 auto 10px auto; /* centrado y separación abajo */
+    max-width: 100px;
+    height: auto;
+  }
 
-          <div class="linea"></div>
-          <strong>Total a Pagar:</strong> $${parseFloat(cel[7].textContent).toLocaleString()}<br />
-          Cambio: $0.00<br />
-          Total Descuentos: $0.00<br />
+  .linea {
+    border-top: 1px dashed #000;
+    margin: 6px 0;
+  }
 
-          <div class="linea"></div>
-          <strong>Discriminación Tarifas de IVA:</strong><br />
-          Base: $${parseFloat(cel[8].textContent).toLocaleString()}<br />
-          IVA: $${(parseFloat(cel[7].textContent) - parseFloat(cel[8].textContent)).toLocaleString()}<br />
+  .campo {
+    margin-bottom: 4px;
+  }
 
-          <div class="campo">Control ID: ${cel[9].textContent}</div>
-          <div class="campo">Estado: ${cel[10].textContent}</div>
-          <div class="campo">Contraseña: ${cel[11].textContent}</div>
+  @media print {
+    @page {
+      size: 70mm auto;
+      margin: 0;
+    }
 
-          <div class="linea"></div>
-          Autorización Numeración de Facturación<br />
-          Resolución 187648078910412<br />
-          Desde: 03/02/2025 - Hasta: 03/02/2027<br />
-          Prefijo: FE - Desde N° 1 hasta N° 200
+    body {
+      margin: 0;
+    }
 
-          <div class="linea"></div>
-          <div class="center">**** Gracias por su compra ****</div>
-          <div class="center">
-            Impresa por Factura Ya - Software de Facturación<br />
-            NIT: 901361537-1 - Proveedor Tecnológico Factura Ya
-          </div>
-        </div>
-      </body>
-    </html>
+    .factura {
+      border: none; /* opcional: eliminar borde al imprimir */
+      padding: 8px;
+    }
+
+    .logo {
+      max-width: 130px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+
+    .campo {
+      margin-bottom: 5px;
+    }
+  }
+</style>
+
+</head>
+<body onload="window.print(); window.close();">
+  <div class="factura">
+    <!-- LOGO PARTE SUPERIOR -->
+<div class="center">
+  <img src="../../../img/a1.png" alt="Logo Fixbionic" class="logo" />
+</div>
+
+
+    <div class="center">
+      <strong>Fix_Bionic</strong><br />
+      NIT: 1022421675-9<br />
+      ESTABLECIMIENTO: FIX_Bionic<br />
+      Cra 50 No. 51 - 29<br />
+      CC Arquicentro<br />
+      Itagüí, Antioquia, Colombia<br />
+      Tel: (+57) 301 5920400<br />
+      Registrado en el Régimen Simple de Tributación<br />
+      No Responsable de IVA<br />
+      Actividad Económica: 9511 - Mantenimiento y reparación de aparatos electrónicos de consumo
+    </div>
+    </div>
+
+    <div class="linea"></div>
+    <div class="center"><strong>Factura Electrónica de Venta</strong></div>
+    <div class="campo">Número: FE ${facturaID}</div>
+    <div class="campo">Fecha: ${fecha}</div>
+    <div class="campo">Forma de Pago: Contado</div>
+    <div class="campo">Medio de Pago: Acuerdo mutuo</div>
+
+    <div class="campo">Vendido por: ${cel[6].textContent}</div>
+    <div class="campo">Cliente: ${cel[1].textContent}</div>
+    <div class="campo">Teléfono: ${cel[2].textContent}</div>
+    <div class="campo">Modelo: ${cel[3].textContent}</div>
+    <div class="campo">Reparación: ${cel[4].textContent}</div>
+    <div class="campo">Notas: ${cel[5].textContent}</div>
+
+    <div class="linea"></div>
+    <strong>Detalle:</strong><br />
+    1 UND ${cel[4].textContent}<br />
+    Precio Unitario: $${parseFloat(cel[7].textContent).toLocaleString()}<br />
+    Valor Total: $${parseFloat(cel[7].textContent).toLocaleString()}<br />
+
+    <div class="linea"></div>
+    <strong>Total a Pagar:</strong> $${parseFloat(cel[7].textContent).toLocaleString()}<br />
+    Cambio: $0.00<br />
+    Total Descuentos: $0.00<br />
+
+    <div class="linea"></div>
+    <strong>Discriminación Tarifas de IVA:</strong><br />
+    Base: $${parseFloat(cel[8].textContent).toLocaleString()}<br />
+    IVA: $${(parseFloat(cel[7].textContent) - parseFloat(cel[8].textContent)).toLocaleString()}<br />
+
+    <div class="campo">Control ID: ${cel[9].textContent}</div>
+    <div class="campo">Estado: ${cel[10].textContent}</div>
+    <div class="campo">Contraseña: ${cel[11].textContent}</div>
+
+    <div class="linea"></div>
+    Autorización Numeración de Facturación<br />
+    Resolución 187648078910412<br />
+    Desde: 03/02/2025 - Hasta: 03/02/2027<br />
+    Prefijo: FE - Desde N° 1 hasta N° 200
+
+    <div class="linea"></div>
+    <div class="center">**** Gracias por su compra ****</div>
+    <div class="center">
+      Impresa por Factura Ya - Software de Facturación<br />
+      NIT: 901361537-1 - Proveedor Tecnológico Factura Ya
+    </div>
+  </div>
+</body>
+</html>
+
   `;
 
   const w = window.open('', '', 'width=300,height=600');
@@ -383,4 +426,16 @@ document.addEventListener('DOMContentLoaded', () => {
     XLSX.utils.book_append_sheet(wb, ws, 'Reparación');
     XLSX.writeFile(wb, 'reparacion_individual.xlsx');
   }
+});
+// Reparaciones
+document.getElementById('btn-export-json').addEventListener('click', () => {
+  const datos = JSON.parse(localStorage.getItem('reparaciones')) || [];
+  const blob = new Blob([JSON.stringify(datos, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `reparaciones_${new Date().toLocaleDateString()}.json`;
+  a.click();
+
+  guardarBackup('Reparaciones', datos); // Guarda el backup
 });
